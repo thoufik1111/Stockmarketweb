@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks Bought</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f172a;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color:#334155;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color:#38bdf8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #444;
+            text-align: center;
+        }
+
+        th {
+            background-color: #38bdf8;
+            color: #000;
+        }
+
+        tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #2e2e2e;
+        }
+
+        tr:hover {
+            background-color: #505050;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #38bdf8;
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1e293b;
+        }
+
+        .arrow-up {
+            width: 16px;
+            vertical-align: middle;
+            background-image: url(images/arr.jpeg);
+        }
+
+        .watchlist-container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stocks Bought</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Stock Value</th>
+                        <th>% Change</th>
+                        <th>Volume</th>
+                        <th>Δ Value</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="stocks-table">
+                    <tr>
+                        <td>Apple</td>
+                        <td class="value">645.25</td>
+                        <td class="change">0.13</td>
+                        <td class="amount">20</td>
+                        <td class="increment">0.01</td>
+                        <td class="quantity">2</td>
+                        <td><button onclick="addToWatchlist('Apple', 645.25, 0.13, 20, 0.01)">Add</button></td>
+                    </tr>
+                    <tr>
+                        <td>Microsoft</td>
+                        <td class="value">555.85</td>
+                        <td class="change">0.10</td>
+                        <td class="amount">10</td>
+                        <td class="increment">0.01</td>
+                        <td class="quantity">3</td>
+                        <td><button onclick="addToWatchlist('Microsoft', 555.85, 0.10, 10, 0.01)">Add</button></td>
+                    </tr>
+                    <tr>
+                        <td>Amazon</td>
+                        <td class="value">220.43</td>
+                        <td class="change">0.09</td>
+                        <td class="amount">30</td>
+                        <td class="increment">0.01</td>
+                        <td class="quantity">1</td>
+                        <td><button onclick="addToWatchlist('Amazon', 220.43, 0.09, 30, 0.01)">Add</button></td>
+                    </tr>
+                    <tr>
+                        <td>Alphabet (Google)</td>
+                        <td class="value">430.31</td>
+                        <td class="change">0.07</td>
+                        <td class="amount">40</td>
+                        <td class="increment">0.01</td>
+                        <td class="quantity">4</td>
+                        <td><button onclick="addToWatchlist('Alphabet', 430.31, 0.07, 40, 0.01)">Add</button></td>
+                    </tr>
+                    <tr>
+                        <td>Facebook (Meta)</td>
+                        <td class="value">527.79</td>
+                        <td class="change">0.03</td>
+                        <td class="amount">50</td>
+                        <td class="increment">0.01</td>
+                        <td class="quantity">2</td>
+                        <td><button onclick="addToWatchlist('Facebook', 527.79, 0.03, 50, 0.01)">Add</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="watchlist-container">
+            <h1>Watchlist</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Stock Value</th>
+                            <th>% Change</th>
+                            <th>Volume</th>
+                            <th>Δ Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="watchlist-table">
+                        <!-- Watchlist items appear here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStocks() {
+            const rows = document.querySelectorAll("#stocks-table tr, #watchlist-table tr");
+            rows.forEach(row => {
+                const valueCell = row.querySelector(".value");
+                const changeCell = row.querySelector(".change");
+                const amountCell = row.querySelector(".amount");
+                const incrementCell = row.querySelector(".increment");
+
+                if (!valueCell || !changeCell || !amountCell || !incrementCell) return;
+
+                let value = parseFloat(valueCell.textContent);
+                let change = parseFloat(changeCell.textContent);
+                let amount = parseInt(amountCell.textContent);
+                let increment = parseFloat(incrementCell.textContent);
+
+                const valueChange = Math.random() * 0.1;
+                value += valueChange;
+                change += valueChange;
+                amount += Math.floor((Math.random() + 0.5) * 20);
+                increment += 0.01;
+
+                valueCell.textContent = value.toFixed(2);
+                changeCell.innerHTML = `${change.toFixed(2)} <img src="images/green-arrow-up.png" class="arrow-up">`;
+                amountCell.textContent = amount;
+                incrementCell.textContent = increment.toFixed(2);
+            });
+        }
+
+        function addToWatchlist(company, value, change, amount, increment) {
+            const watchlistTable = document.getElementById('watchlist-table');
+            const existingRows = Array.from(watchlistTable.querySelectorAll('tr'));
+
+            if (existingRows.some(row => row.children[0].textContent === company)) return;
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${company}</td>
+                <td class="value">${value.toFixed(2)}</td>
+                <td class="change">${change.toFixed(2)} <img src="images/green-arrow-up.png" class="arrow-up"></td>
+                <td class="amount">${amount}</td>
+                <td class="increment">${increment.toFixed(2)}</td>
+            `;
+            watchlistTable.appendChild(newRow);
+        }
+
+        setInterval(updateStocks, 6000);
+    </script>
+</body>
+</html>
