@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a; /* Dark theme background */
+            margin: 0;
+            padding: 20px;
+            background-size: cover;
+            background-position: center;
+            color: #f8fafc; /* Light text color */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #334155; /* Dark card background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #38bdf8; /* Title text color */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2e8f0; /* Light label color */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #1f2937; /* Input background */
+            color: #f8fafc; /* Text color inside inputs */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3b82f6; /* Primary button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #2563eb; /* Hover effect for buttons */
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            display: inline-block;
+            margin-left: 8px;
+            color: #e2e8f0; /* Light color for labels */
+        }
+
+        .glow {
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+        }
+
+        #account-name {
+            display: none;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        select, input[type="file"] {
+            background-color: #1f2937; /* Consistent dark background for form elements */
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #3b82f6; /* Highlight on focus */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form onsubmit="saveChanges(event)">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter your name..." ondblclick="storeName(); addGlow(this);">
+            </div>
+            <div class="form-group">
+                <label for="account-number">Account Number</label>
+                <input type="text" id="account-number" placeholder="Enter your account number..." ondblclick="storeAccountNumber(); addGlow(this);">
+            </div>
+            <div class="form-group">
+                <label for="profile-photo">Profile Photo</label>
+                <button type="button" onclick="choosePhoto()">Choose Photo</button>
+                <input type="file" id="profile-photo" accept="image/*" style="display: none;" onchange="addGlow(this);">
+                <input type="button" value="Upload from Device" onclick="document.getElementById('profile-photo').click()">
+                <input type="button" value="Random Image" onclick="chooseRandomImage(); addGlow(document.getElementById('profile-photo'))">
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" rows="5" maxlength="500" placeholder="Enter your bio..." oninput="addGlow(this);"></textarea>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="private-profile" oninput="addGlow(this);">
+                <label for="private-profile">Make Profile Private</label>
+            </div>
+            <div class="form-group">
+                <label for="stock-recommendations">Stock Recommendations</label>
+                <input type="text" id="stock-recommendations" placeholder="Enter stocks for notifications..." oninput="addGlow(this);">
+            </div>
+            <div class="form-group">
+                <button type="submit">Save</button>
+            </div>
+            <div class="form-group">
+                <label for="language">Language</label>
+                <select id="language" onchange="changeLanguage(); addGlow(this);">
+                    <option value="english">English</option>
+                    <option value="tamil">Tamil</option>
+                    <option value="hindi">Hindi</option>
+                </select>
+            </div>
+        </form>
+        <div id="account-name">Account Holder Name</div>
+    </div>
+</body>
+<script>
+    function choosePhoto() {
+        document.getElementById('profile-photo').click();
+    }
+
+    function chooseRandomImage() {
+        alert("Random image will be assigned as your profile photo.");
+        // Implement random image selection logic here
+    }
+
+    function changeLanguage() {
+        var language = document.getElementById('language').value;
+        var nameLabel = document.querySelector('label[for="name"]');
+        var accountNumberLabel = document.querySelector('label[for="account-number"]');
+        var profilePhotoLabel = document.querySelector('label[for="profile-photo"]');
+        var bioLabel = document.querySelector('label[for="bio"]');
+        var privateProfileLabel = document.querySelector('label[for="private-profile"]');
+        var stockRecommendationsLabel = document.querySelector('label[for="stock-recommendations"]');
+
+        if (language === 'english') {
+            nameLabel.textContent = "Name";
+            accountNumberLabel.textContent = "Account Number";
+            profilePhotoLabel.textContent = "Profile Photo";
+            bioLabel.textContent = "Bio";
+            privateProfileLabel.textContent = "Make Profile Private";
+            stockRecommendationsLabel.textContent = "Stock Recommendations";
+        } else if (language === 'tamil') {
+            nameLabel.textContent = "பெயர்";
+            accountNumberLabel.textContent = "கணக்கு எண்";
+            profilePhotoLabel.textContent = "சுயவிவர புகைப்படம்";
+            bioLabel.textContent = "சுயவிவரம்";
+            privateProfileLabel.textContent = "சுயவிவரத்தை தனிப்பட்டது ஆக்கவும்";
+            stockRecommendationsLabel.textContent = "பங்கு பரிந்துரைகள்";
+        } else if (language === 'hindi') {
+            nameLabel.textContent = "नाम";
+            accountNumberLabel.textContent = "खाता संख्या";
+            profilePhotoLabel.textContent = "प्रोफ़ाइल फोटो";
+            bioLabel.textContent = "जैव";
+            privateProfileLabel.textContent = "प्रोफ़ाइल को निजी बनाएं";
+            stockRecommendationsLabel.textContent = "स्टॉक सिफारिशें";
+        }
+    }
+
+    function storeName() {
+        var nameInput = document.getElementById('name').value;
+        if (nameInput) {
+            localStorage.setItem('storedName', nameInput);
+        }
+    }
+
+    function storeAccountNumber() {
+        var accountNumberInput = document.getElementById('account-number').value;
+        if (accountNumberInput) {
+            localStorage.setItem('storedAccountNumber', accountNumberInput);
+        }
+    }
+
+    function addGlow(element) {
+        element.classList.add('glow');
+    }
+
+    function saveChanges(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+        window.location.href = "homepg.html"; // Redirect to homepg.html
+    }
+
+    document.querySelector('.container').addEventListener('click', function() {
+        var accountName = document.getElementById('account-name');
+        var nameInput = localStorage.getItem('storedName'); // Get the stored name
+        if (nameInput) {
+            accountName.textContent = nameInput;
+            accountName.style.display = 'block';
+            setTimeout(function() {
+                accountName.style.display = 'none';
+            }, 2000); // Adjust duration as needed
+        }
+    });
+
+    window.onload = function() {
+        var storedName = localStorage.getItem('storedName');
+        if (storedName) {
+            document.getElementById('name').value = storedName;
+            document.getElementById('name').classList.add('glow');
+        }
+
+        var storedAccountNumber = localStorage.getItem('storedAccountNumber');
+        if (storedAccountNumber) {
+            document.getElementById('account-number').value = storedAccountNumber;
+            document.getElementById('account-number').classList.add('glow');
+        }
+    }
+</script>
+</html>

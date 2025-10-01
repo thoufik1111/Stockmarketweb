@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Achievements</title>
+  <link rel="stylesheet" href="style/main.css" />
+  <style>
+    body {
+      background-color: #0f172a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f1f5f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #38bdf8;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .tabs button {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 10px 20px;
+      color: #f1f5f9;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .tabs button.active {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    .stat-title {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #f8fafc;
+    }
+    .leaderboard {
+      margin-top: 40px;
+    }
+    .leaderboard h2 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+    .leaderboard ul {
+      list-style: none;
+      padding: 0;
+    }
+    .leaderboard li {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>User Achievements</h1>
+
+  <div class="tabs">
+    <button class="active" onclick="switchTab('weekly')">Weekly</button>
+    <button onclick="switchTab('monthly')">Monthly</button>
+    <button onclick="switchTab('yearly')">Yearly</button>
+  </div>
+
+  <div id="weekly" class="stats-container tab-content">
+    <div class="stat-card">
+      <div class="stat-title">Stocks Bought</div>
+      <div class="stat-value">12</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Active Hours</div>
+      <div class="stat-value">8h 30m</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Profit Earned</div>
+      <div class="stat-value">₹3,250</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Leaderboard Rank</div>
+      <div class="stat-value">#7</div>
+    </div>
+  </div>
+
+  <div id="monthly" class="stats-container tab-content" style="display: none;">
+    <div class="stat-card">
+      <div class="stat-title">Stocks Bought</div>
+      <div class="stat-value">47</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Active Hours</div>
+      <div class="stat-value">32h 10m</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Profit Earned</div>
+      <div class="stat-value">₹12,800</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Leaderboard Rank</div>
+      <div class="stat-value">#4</div>
+    </div>
+  </div>
+
+  <div id="yearly" class="stats-container tab-content" style="display: none;">
+    <div class="stat-card">
+      <div class="stat-title">Stocks Bought</div>
+      <div class="stat-value">580</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Active Hours</div>
+      <div class="stat-value">412h 40m</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Profit Earned</div>
+      <div class="stat-value">₹1.9L</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Leaderboard Rank</div>
+      <div class="stat-value">#2</div>
+    </div>
+  </div>
+
+  <div class="leaderboard">
+    <h2>Friend Circle Leaderboard</h2>
+    <ul>
+      <li><span>🔥 Ragul</span> <strong>₹2.3L</strong></li>
+      <li><span>🚀 Karthi</span> <strong>₹1.9L</strong></li>
+      <li><span>💎 Das</span> <strong>₹1.2L</strong></li>
+      <li><span>🌟 Thoufik</span> <strong>₹1.1L</strong></li>
+    </ul>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      document.getElementById(tab).style.display = 'grid';
+
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

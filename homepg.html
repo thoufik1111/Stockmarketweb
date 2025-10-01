@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow-y: auto; /* Enable scrolling *//* Base background color */
+            background: linear-gradient(135deg, #4169E1, #39FF14);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            background-image: url(images/mon.jpg);
+            color: white;
+        }
+
+        .menu-button {
+            cursor: pointer;
+            font-size: 18px;
+            background-color: #555;
+            color: white;
+            background-image: url(images/W4.jpg);
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 30%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+        }
+
+        .search-icon {
+            position: relative;
+            right: 29px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .filter-button { 
+            cursor: pointer; 
+            width: 10%;
+            font-size: 12px; 
+            background-color: #555; 
+            background-image: url(images/W4.jpg);
+            color: white; 
+            padding: 5px; 
+            border: none; 
+            border-radius: 1px; 
+            margin-left: 0px; } 
+        .filter-options { 
+            display: none; 
+            position: fixed; 
+            top: 50px; 
+            left:200px;
+            background-image: url(images/W4.jpg);
+            color: white; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            padding: 10px; } 
+        .filter-options a { 
+            display: block; 
+            padding: 10px; 
+            color: white; 
+            text-decoration: none; } 
+        .filter-options a:hover { 
+            background-color: #444; }
+        
+         .notification-bar {
+            display: none; /* Hidden initially */
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
+            width: 30%;
+            left: 500px;
+            background-color: #70a1eb;
+            border-radius: 30px;
+            font-size: 22px;
+            color: #0a0a0a;
+            text-align: center;
+            padding: 10px;
+            z-index: 1000; /* Ensure it appears above other elements */
+            transition: transform 0.5s, opacity 0.5s;
+            margin-top: 1px; /* Add margin-top to create space below the header */
+        }
+        .notification-bar.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        } 
+        .notification-bar.hide {
+            display: block;
+            transform: translateY(-100%);
+            opacity: 0;
+        } 
+        .notification-bar small {
+            display: block;
+            font-size: 12px;
+            color: #020202;
+        }  
+        .demotrade-icon img{ 
+          width: 40px;
+          height: 40px;
+          margin-left: 70px;
+          margin-right: -10px;
+          cursor: pointer;
+          border-radius: 40px;
+         }
+        .notification-icon img{ 
+          width: 40px;
+          height: 40px;
+          margin-left: 20px;
+          cursor: pointer;
+          border-radius: 40px;
+         }
+         .announcement-icon img{
+          width: 40px;
+          height: 40px;
+          margin-left: 10px;
+          cursor: pointer;
+         }
+         .slide-page {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 50%;
+            height: 100%;
+            background-color: white;
+            background-image: url(images/W4.jpg);
+            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+            transition: right 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1001; /* Ensure it appears above other elements */
+            overflow-y: auto; /* Enable scrolling if content overflows */
+        }      
+        .slide-header {
+            background-color: #ffd700;
+            background-image: url(images/mon.jpg);
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+        }       
+        .slide-content {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding: 20px;
+            color: #faf8f8;
+        }
+        .open {
+            right: 0;
+        }
+        .slide-page:hover { 
+            box-shadow: -2px 0 15px rgba(255, 196, 0, 0.7); /* glow effect */ }
+
+        .menu {
+            width: 250px;
+            height: 100vh;
+            background-color: #333;
+            background-image: url(images/W4.jpg);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -500px;
+            transition: left 0.3s;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+        .menu a:hover {
+            background-color: #444;
+        }
+        .back-button {
+            cursor: pointer;
+            font-size: 18px;
+            background-color: #555;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            background-color: #333;
+            background-image: url(images/W4.jpg);
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .profile-menu a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+        }
+        .profile-menu a:hover {
+            background-color: #444;
+        }
+
+        .home-container {
+            text-align: center;
+            padding: 50px;
+        }
+        .home-container h1 {
+            font-family: 'Times New Roman';
+            color: #ffd700;
+        }
+        .description {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #ffd700;
+        }
+
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+        .chatbox {
+            position: fixed;
+            bottom: -100%; /* Hidden by default */
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-image: url('images/W5.webp'); /* Background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: right 1.3s; /* Smooth transition */
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+        .chatbox-header {
+            background-color: #333;
+            background-image: url('images/W4.jpg');
+            color: rgb(248, 244, 244);
+            padding: 10px;
+            text-align: center;
+        }
+        .chatbox-messages {
+            flex: 1;
+            padding: 10px;
+            color: rgb(199, 199, 199);
+            overflow-y: auto;
+        }
+        .chatbox-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+        .chatbox-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .chatbox-input button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        .leaderboard {
+            margin-top: 30px;
+            color: #ffd700;
+        }
+        .leaderboard table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        .leaderboard th, .leaderboard td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .leaderboard th {
+            background-color: #4b4949;
+            color: white;
+        }
+        .leaderboard tr:nth-child(odd) {
+            background-color: #0e0e0e;
+        }
+        .leaderboard tr:nth-child(even) {
+            background-color: #080808;
+        }
+        .leaderboard .positive-change {
+            color: green;
+        }
+        .leaderboard .negative-change {
+            color: red;
+        }
+
+        .stock-graphics img {
+            width: 200px;
+            height: 100px;
+            margin: 0 10px;
+        }
+        .graph-container {
+            width: 80%;
+            margin: 150px auto;
+            background-image: url('images/graph.png'); /* Background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .graph {
+            width: 90%;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            position: relative;
+        }
+        .highlights {
+            margin-top: -150px;
+            color: #ffd700;
+            text-align: center;
+        }
+        .highlights-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        .highlights-table th, .highlights-table td {
+            padding: 12px;
+            border: 1px solid #fbf8f8;
+            text-align: center;
+        }
+        .highlights-table th {
+            background-color: #4b4949;
+            color: white;
+        }
+        .highlights-table tr:nth-child(odd) {
+            background-color: #101010;
+        }
+        .highlights-table tr:nth-child(even) {
+            background-color: #101010;
+        }
+        .highlights-table .positive-change {
+            color: green;
+        }
+        .highlights-table .negative-change {
+            color: red;
+        }
+        .highlights-table .neutral {
+            color: rgb(255, 255, 255);
+        }
+        .news-feed-box {
+            text-align: center;
+            color: #f4f4f4;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: #f8f8f8;
+            background-image: url(images/mon.jpg);
+            width: 55%; /* Adjust the width as needed */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-carousel {
+            position: relative;
+            width: 100%;
+            height: 5cm; /* Set the height to 5 cm */
+            overflow: hidden;
+        }
+        
+        .news-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%; /* Ensure the slides take up the full height */
+        }
+        
+        .news-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            
+        }
+        
+        .news-slide img {
+            width: 50%;
+            height: 95%; /* Ensure the images fit within the height */
+            object-fit: fill; /* Cover the entire area without stretching */
+            border-radius: 10px;
+        }
+        
+        .news-slide p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .prev {
+            left: 10px;
+        }
+        
+        .next {
+            right: 10px;
+        }
+        
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header"> 
+    <div class="menu-button" onclick="toggleMenu()">Menu</div> 
+    <div class="search-bar"> 
+        <input type="text" id="stock-search" placeholder="Search for a stock"> 
+        <span class="search-icon" onclick="redirectToResearch()">&#128269;</span> <!-- Search Icon as button --> 
+        <div class="filter-button" onclick="toggleFilter()">Filter</div> 
+    </div>
+
+    <div class="filter-options" id="filter-options"> 
+        <a href="#">All</a> 
+        <a href="#">Industry</a> 
+        <a href="#">Market Cap</a> 
+        <a href="#">Stock Price</a> 
+        <a href="#">Department</a> 
+    </div>
+        <div>Welcome, Thoufik!</div>
+        <div class="demotrade-icon"><a href="demo.html"><img src="images/demo.jpeg"></a></div>
+        <div class="notification-icon"><img src="images/not.jpg" alt="Notifications"></div> 
+        <div class="announcement-icon"><img src="images/ann.webp" alt="Announcements"></div>
+        <div class="profile">
+            <img src="images/pro.jpg" alt="Profile" onclick="toggleProfileMenu()">
+        </div>
+    </div>
+   <!-- Announcement Slide Page -->
+<div id="announcement-slide" class="slide-page">
+    <div class="slide-header">Announcements</div>
+    <div class="slide-content">
+        <h3>Future Updates</h3>
+        <p>[Your future updates content]</p>
+        <h3>Upcoming Stock Announcements</h3>
+        <p>[Your stock announcements content]</p>
+        <h3>Stock Events in India</h3>
+        <p>[Your stock events content]</p>
+    </div>
+</div>
+<div class="notification-bar" id="notificationBar"> 
+    <p id="notificationMessage">Your Stock getting inclined</p>
+    <small id="notificationTime">Last updated: Time</small> 
+</div>
+<!-- Notification Slide Page -->
+<div id="notification-slide" class="slide-page">
+    <div class="slide-header">Notifications</div>
+    <div class="slide-content">
+        <h3>Unread Notifications</h3>
+        <p>[Unread notifications content]</p>
+        <h3>Read Notifications</h3>
+        <p>[Read notifications content]</p>
+    </div>
+</div>   
+    <!-- Menu -->
+    <div class="menu" id="menu">
+        <a href="About.html">About</a> <!-- Link to the About page -->
+        <a href="Leaderboard.html">Stockleaderboard</a>
+        <a href="Research.html">Research</a>
+        <a href="Analysis.html">Analysis</a>
+        <a href="Recommendation.html">Recommendation</a>
+        <a href="Tutorial.html">Tutorial</a>
+        <div class="back-button" onclick="toggleMenu()">Back</div>
+    </div>
+
+    <!-- Profile Menu -->
+    <div class="profile-menu" id="profile-menu">
+        <a href="editpro.html">Edit Profile</a>
+        <a href="stocksbought.html">Stocks Bought</a> <!-- Link to the Stocks Bought page -->
+        <a href="Achievement.html">Achievements</a>
+        <a href="Hub.html">Investors Hub</a>
+    </div>
+
+    <div class="home-container">
+        <h1>Welcome to the Home Page!</h1>
+        <p class="description">This website is about AI stock prediction and recommendation. Explore the features to make informed investment decisions with the power of AI.</p>
+        <div class="stock-graphics">
+            <img src="images/stock1.jpg" alt="Stock Graphic 1">
+            <img src="images/stock2.jpg" alt="Stock Graphic 2">
+        </div>
+        <div class="leaderboard">
+            <h2>Top 5 Stocks Live</h2>
+            <p class="description">Updated :29-December-2024 20:30 IST</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>LTP</th>
+                        <th>% Change</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- You can add the data here later -->
+                    <tr>
+                        <td>DRREDDY</td>
+                        <td>1392</td>
+                        <td class="positive-change">+2.72%</td>
+                        <td>36,56,253</td>
+                    </tr>
+                    <tr>
+                        <td>INDUSINDBK</td>
+                        <td>954</td>
+                        <td class="positive-change">+2.37%</td>
+                        <td>63,00,341</td>
+                    </tr>
+                    <tr>
+                        <td>M&M</td>
+                        <td>3042</td>
+                        <td class="positive-change">+2.23%</td>
+                        <td>42,00,233</td>
+                            <tr>
+                                <td>TATAMOTORS</td>
+                                <td>754</td>
+                                <td class="positive-change">+1.78%</td>
+                                <td>1,58,35,079</td>
+                            </tr>
+                            <tr>
+                                <td>EICHERMOT</td>
+                                <td>4874</td>
+                                <td class="positive-change">+1.51%</td>
+                                <td>4,08,992</td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                </tbody>
+            </table> 
+                            </div>
+                            
+                            <div class="graph-container"> <h2>Stock Trends</h2> <div id="stock-graph" class="graph"></div> </div>
+                            </div>
+                            <div class="highlights">
+                                <h2>Market Highlights</h2>
+                                <table class="highlights-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Company</th>
+                                            <th>LTP</th>
+                                            <th>% Change</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="5">Top Gainers</td>
+                                            <td>EICHERMOT</td>
+                                            <td>5,303.00</td>
+                                            <td class="positive-change">+8.55%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>BAJAJFINSV</td>
+                                            <td>1700.00</td>
+                                            <td class="positive-change">+7.84%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>BAJFINANCE</td>
+                                            <td>7373.60</td>
+                                            <td class="positive-change">+6.32%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>MARUTI</td>
+                                            <td>11837.00</td>
+                                            <td class="positive-change">+5.61%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SHRIRAMFIN</td>
+                                            <td>3051.00</td>
+                                            <td class="positive-change">+4.53%</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="5">Top Losers</td>
+                                            <td>SUNPHARMA</td>
+                                            <td>1874.10</td>
+                                            <td class="negative-change">-0.84%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>BRITANNIA</td>
+                                            <td>4785.00</td>
+                                            <td class="negative-change">-0.20%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>BPCL</td>
+                                            <td>295.90</td>
+                                            <td class="neutral">0.20%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DRREDDY</td>
+                                            <td>1,373.00</td>
+                                            <td class="neutral">0.29%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CIPLA</td>
+                                            <td>1,535.00</td>
+                                            <td class="neutral">0.39%</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="5">Top Active Market</td>
+                                            <td>BAJFINANCE</td>
+                                            <td>7,373,60</td>
+                                            <td class="positive-change">+6.32%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RELIANCE</td>
+                                            <td>1,240.55</td>
+                                            <td class="positive-change">+1.58%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>HDFCBANK</td>
+                                            <td>1,792.35</td>
+                                            <td class="positive-change">+0.54%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>MARUTI</td>
+                                            <td>11,837.00</td>
+                                            <td class="positive-change">+5.61%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EICHERMOT</td>
+                                            <td>5,303.00</td>
+                                            <td class="positive-change">+8.55%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            
+                            <div class="chatbot-icon" onclick="toggleChatbot()">💬</div>
+                            <div class="chatbox" id="chatbox">
+                                <div class="chatbox-header">Virtual AI Assistant</div>
+                                <div class="chatbox-messages">
+                                    <p>Hi! How can I assist you today?</p>
+                                </div>
+                                <div class="chatbox-input">
+                                    <input type="text" placeholder="Type a message...">
+                                    <button>Send</button>
+                                </div>
+                            </div>
+
+                            <div class="news-feed-box">
+                                <h2>Latest News</h2>
+                                <div class="news-carousel">
+                                    <button class="prev" onclick="prevSlide()">&#10094;</button>
+                                    <div class="news-slides">
+                                        <!-- News Slide 1 -->
+                                        <div class="news-slide">
+                                            <a href="https://m.economictimes.com/markets/stocks/news/itc-hotels-to-be-51st-nifty-stock-in-dummy-form-till-listing-last-day-to-buy-today-before-demerger/amp_articleshow/116900833.cms" target="_blank">
+                                                <img src="images/itc.webp" alt="News 1">
+                                                <p>Headline 1</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 2 -->
+                                        <div class="news-slide">
+                                            <a href="https://m.economictimes.com/markets/stocks/news/hdfc-bank-gets-rbi-nod-to-acquire-up-to-9-5-stake-in-au-small-finance-bank/amp_articleshow/116934826.cms" target="_blank">
+                                                <img src="images/hdfc.jpeg" alt="News 2">
+                                                <p>Headline 2</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 3 -->
+                                        <div class="news-slide">
+                                            <a href="https://www.etnownews.com/markets/indo-farm-equipment-ipo-allotment-status-check-online-live-shares-link-here-with-steps-article-116923099/amp" target="_blank">
+                                                <img src="images/indo.jpg" alt="News 3">
+                                                <p>Headline 3</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 4 -->
+                                        <div class="news-slide">
+                                            <a href="https://www.moneycontrol.com/news/business/markets/stock-market-live-sensex-nifty-50-share-price-gift-nifty-latest-updates-03-01-2025-liveblog-12902490.html/amp" target="_blank">
+                                                <img src="images/close.jpg" alt="News 4">
+                                                <p>Headline 4</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 5 -->
+                                        <div class="news-slide">
+                                            <a href="https://www.cnbctv18.com/market/stock-market-live-updates-nifty-50-sensex-today-irfc-dmart-vmart-adani-group-share-price-liveblog-19533774.htm/amp" target="_blank">
+                                                <img src="images/sm.jpg" alt="News 5">
+                                                <p>Headline 5</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 6 -->
+                                        <div class="news-slide">
+                                            <a href="https://www.livemint.com/market/stock-market-news/stocks-to-buy-under-rs-100-experts-recommend-six-shares-to-buy-on-monday-6-january-2025/amp-11735964240595.html" target="_blank">
+                                                <img src="images/live.jpeg" alt="News 6">
+                                                <p>Headline 6</p>
+                                            </a>
+                                        </div>
+                                        <!-- News Slide 7 -->
+                                        <div class="news-slide">
+                                            <a href="https://www.livemint.com/market/stock-market-news/stock-market-fpi-selloff-weak-rupee-nifty-100-nifty-midcap-150-nifty-smallcap-midcap-stocks-smallcap-stocks/amp-11735812317414.html" target="_blank">
+                                                <img src="images/sm2.jpeg" alt="News 7">
+                                                <p>Headline 7</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <button class="next" onclick="nextSlide()">&#10095;</button>
+                                </div>
+                            </div>
+                            
+                        <script>
+                            
+                            function redirectToResearch() {
+                                const stock = document.getElementById('stock-search').value;
+                                if (stock) {
+                                    window.location.href = `research.html?stock=${encodeURIComponent(stock)}`;
+                                }
+                            }
+
+                            function toggleMenu() {
+                                var menu = document.getElementById('menu');
+                                if (menu.style.left === '-250px') {
+                                    menu.style.left = '0';
+                                } else {
+                                    menu.style.left = '-250px';
+                                }
+                            }
+                            
+                            function toggleProfileMenu() {
+                                var profileMenu = document.getElementById('profile-menu');
+                                if (profileMenu.style.display === 'none' || profileMenu.style.display === '') {
+                                    profileMenu.style.display = 'block';
+                                } else {
+                                    profileMenu.style.display = 'none';
+                                }
+                            }
+                            // Filter Options Toggle
+                            function toggleFilter() {
+                                var filterOptions = document.getElementById('filter-options');
+                                if (filterOptions.style.display === 'none' || filterOptions.style.display === '') {
+                                    filterOptions.style.display = 'block';
+                                } else {
+                                    filterOptions.style.display = 'none';
+                                }
+                            }
+                            function toggleChatbot() {
+                                var chatbox = document.getElementById('chatbox');
+                                if (chatbox.style.bottom === '20px') {
+                                    chatbox.style.bottom = '-100%';
+                                } else {
+                                    chatbox.style.bottom = '20px';
+                                }
+                            }
+                            
+                            // Close the chatbot if clicked outside
+                            window.addEventListener('click', function(event) {
+                                var chatbox = document.getElementById('chatbox');
+                                var chatbotIcon = document.querySelector('.chatbot-icon');
+                                if (!chatbox.contains(event.target) && !chatbotIcon.contains(event.target)) {
+                                    chatbox.style.bottom = '-100%';
+                                }
+                            });
+
+       
+                            // Close the profile menu and filter options if clicked outside
+                            window.onclick = function(event) {
+                                if (!event.target.matches('.profile img') && !event.target.matches('.filter-button')) {
+                                    var profileMenu = document.getElementById('profile-menu');
+                                    if (profileMenu.style.display === 'block') {
+                                        profileMenu.style.display = 'none';
+                                    }
+
+                                    var filterOptions = document.getElementById('filter-options');
+                                    if (filterOptions.style.display === 'block') {
+                                        filterOptions.style.display = 'none';
+                                    }
+                                }
+                            }
+                            document.addEventListener('DOMContentLoaded', function () {
+                               const announcementIcon = document.querySelector('.announcement-icon img');
+                               const notificationIcon = document.querySelector('.notification-icon img');
+                               const announcementSlide = document.getElementById('announcement-slide');
+                               const notificationSlide = document.getElementById('notification-slide');
+                           
+                               announcementIcon.addEventListener('click', function () {
+                                   announcementSlide.classList.toggle('open');
+                                   notificationSlide.classList.remove('open');
+                               });
+                           
+                               notificationIcon.addEventListener('click', function () {
+                                   notificationSlide.classList.toggle('open');
+                                   announcementSlide.classList.remove('open');
+                               });
+                           
+                               window.addEventListener('click', function (event) {
+                                   if (!announcementIcon.contains(event.target) && !announcementSlide.contains(event.target)) {
+                                       announcementSlide.classList.remove('open');
+                                   }
+                                   if (!notificationIcon.contains(event.target) && !notificationSlide.contains(event.target)) {
+                                       notificationSlide.classList.remove('open');
+                                   }
+                               });
+                            });
+                            
+                            document.addEventListener('DOMContentLoaded', function() {
+                            function updateNotification() {
+                                const notificationBar = document.getElementById('notificationBar');
+                                const notificationMessage = document.getElementById('notificationMessage');
+                                const notificationTime = document.getElementById('notificationTime');
+                        
+                                // Update notification content as needed
+                                const now = new Date();
+                                notificationTime.textContent = `Last updated: ${now.toLocaleTimeString()}`;
+                        
+                                // Show the notification bar
+                                notificationBar.classList.remove('hide');
+                                notificationBar.classList.add('show');
+                        
+                                // Hide the notification bar after 5 seconds
+                                setTimeout(() => {
+                                    notificationBar.classList.remove('show');
+                                    notificationBar.classList.add('hide');
+                                }, 5000);
+                        
+                                // Call this function every 20 seconds
+                                setTimeout(updateNotification, 20000);
+                            }
+                        
+                            // Initial call to start the notification updates
+                            updateNotification();
+                        });
+
+                            let currentSlide = 0;
+
+                            function showSlide(index) {
+                                const slides = document.querySelectorAll('.news-slide');
+                                const totalSlides = slides.length;
+                            
+                                if (index >= totalSlides) {
+                                    currentSlide = 0;
+                                } else if (index < 0) {
+                                    currentSlide = totalSlides - 1;
+                                } else {
+                                    currentSlide = index;
+                                }
+                            
+                                const newTransform = `translateX(-${currentSlide * 100}%)`;
+                                document.querySelector('.news-slides').style.transform = newTransform;
+                            }
+                            
+                            function nextSlide() {
+                                showSlide(currentSlide + 1);
+                            }
+                            
+                            function prevSlide() {
+                                showSlide(currentSlide - 1);
+                            }                          
+</script>
+
+</body>
+</html>
+                            

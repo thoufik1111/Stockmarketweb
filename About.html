@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <style>
+        body {
+            font-family: Garamond, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            background-image: url('images/sign.webp'); /* Background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.597);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Hide elements that slide away */
+        }
+
+        .topic-box {
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* Add transition for smooth appearing effect */
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .contact {
+            font-family: cambria, sans-serif;
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About Us</h1>
+        
+        <div class="topic-box" id="box1">
+            <h2>What is Stock Marketing?</h2>
+            <p>Stock marketing involves the buying and selling of shares in publicly traded companies. It allows individuals and institutions to own a part of a company and potentially profit from its performance. The stock market is influenced by various factors including economic indicators, company performance, and investor sentiment.</p>
+        </div>
+        
+        <div class="topic-box" id="box2">
+            <h2>How to Use the Website</h2>
+            <p>Our website is designed to help users make informed investment decisions through AI-driven stock predictions and recommendations. Start by creating an account and setting up your profile. Use the search bar to find stocks of interest and navigate through the menus to access various features such as live stock updates, investment insights, and market analysis.</p>
+        </div>
+        
+        <div class="topic-box" id="box3">
+            <h2>How Prediction Works</h2>
+            <p>Our prediction model leverages historical data, market trends, and advanced algorithms to forecast stock performance. By analyzing a vast array of data points, the AI can identify patterns and predict future stock movements with a high degree of accuracy.</p>
+        </div>
+        
+        <div class="topic-box" id="box4">
+            <h2>How Recommendation Works and Its Precision</h2>
+            <p>Our recommendation system uses a combination of user preferences, historical performance, and real-time data to suggest stocks that align with your investment goals. The AI continuously learns from new data, refining its recommendations to ensure they remain relevant and precise.</p>
+        </div>
+        
+        <div class="topic-box" id="box5">
+            <h2>About the Maker</h2>
+            <p>Mohammed Thoufik S is an AI enthusiast, a student at RIT College Chennai, and a talented web designer. With a passion for technology and innovation, Mohammed has crafted this website to empower users with cutting-edge tools for stock market analysis and investment. His unique blend of skills and dedication ensures that this platform is both professional and user-friendly.</p>
+        </div>
+        
+        <div class="contact topic-box" id="box6">
+            <p>Contact Information:</p>
+            <p>Phone : +91 84898 78187</p>
+            <p>Email : mohammedthoufik22@gmail.com</p>
+            <p>Instagram: <a href="https://www.instagram.com/royal_beast_boy/profilecard/?igsh=MXc1YTB0Z3JqMTdlZQ==" target="_blank">royal_beast_boy</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', () => {
+            const boxes = document.querySelectorAll('.topic-box');
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    box.style.opacity = '1';
+                }, index * 5000); // Set a 5-second gap for each box to appear
+            });
+        });
+    </script>
+</body>
+</html>

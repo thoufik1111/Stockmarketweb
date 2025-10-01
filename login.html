@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3bdeff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('images/sign.webp');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .sign-in-link {
+            color: #ffffff;
+            background-color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sign-in-link:hover {
+            background-color: #555;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            background-image: url('images/int.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            position: relative;
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #141313;
+            text-align: center;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-image: url('images/log.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #faf8f8;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #090909;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #d51717;
+        }
+
+        .language-selector {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .login-container::before,
+        .login-container::after {
+            content: '';
+            position: absolute;
+            background: url('images/ai.jpg') no-repeat center center / contain;
+            width: 100px;
+            height: 100px;
+        }
+
+        .login-container::before {
+            top: -120px;
+            left: -50px;
+        }
+
+        .login-container::after {
+            bottom: -120px;
+            right: -50px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="signuppg.html" class="sign-in-link">Sign Up</a>
+</div>
+
+<div class="login-container" id="loginContainer">
+    <div class="eye left" id="leftEye"></div>
+    <div class="eye right" id="rightEye"></div>
+    <h2>Login Page</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="email" id="email" placeholder="Email ID">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+
+    <div class="language-selector">
+        <select id="language" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="hin">Hindi</option>
+            <option value="tam">Tamil</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    
+    function login() {
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        const validUsername = "Thoufik";
+        const validEmail = "mohammedthoufik22@gmail.com";
+        const validPassword = "Thoufik22";
+
+        if (username === validUsername && email === validEmail && password === validPassword) {
+            localStorage.setItem('username', username);
+            window.location.href = 'homepg.html';
+        } else {
+            alert("Invalid Username, Email or Password!");
+        }
+    }
+
+    function changeLanguage() {
+        const lang = document.getElementById('language').value;
+        if (lang === 'en') {
+            document.querySelector('h2').innerText = 'Login Page';
+            document.getElementById('username').placeholder = 'Username';
+            document.getElementById('email').placeholder = 'Email ID';
+            document.getElementById('password').placeholder = 'Password';
+            document.querySelector('button').innerText = 'Login';
+        } else if (lang === 'hin') {
+            document.querySelector('h2').innerText = 'लॉगिन पृष्ठ';
+            document.getElementById('username').placeholder = 'उपयोगकर्ता नाम';
+            document.getElementById('email').placeholder = 'ईमेल';
+            document.getElementById('password').placeholder = 'पासवर्ड';
+            document.querySelector('button').innerText = 'लॉगिन';
+        } else if (lang === 'tam') {
+            document.querySelector('h2').innerText = 'உள்நுழைவு பக்கம்';
+            document.getElementById('username').placeholder = 'பயனர்பெயர்';
+            document.getElementById('email').placeholder = 'மின்னஞ்சல் தலைப்பு';
+            document.getElementById('password').placeholder = 'கடவுச்சொல்';
+            document.querySelector('button').innerText = 'உள்நுழைவு';
+        }
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const loginContainer = document.getElementById('loginContainer');
+        const leftEye = document.getElementById('leftEye');
+        const rightEye = document.getElementById('rightEye');
+        const rect = loginContainer.getBoundingClientRect();
+        const distX = e.clientX - (rect.left + rect.width / 2);
+        const distY = e.clientY - (rect.top + rect.height / 2);
+        const distance = Math.sqrt(distX * distX + distY * distY);
+
+        if (distance < 200) { // Trigger floating effect when cursor is within 200px of the container
+            loginContainer.style.transform = 'translateY(-20px)';
+            loginContainer.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.6)'; // Add glowing effect
+            leftEye.classList.add('closed'); // Close the left eye when the cursor is near
+            rightEye.classList.add('closed'); // Close the right eye when the cursor is near
+        } else {
+            loginContainer.style.transform = 'translateY(0)';
+            loginContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+            leftEye.classList.remove('closed'); // Open the left eye when the cursor is away
+            rightEye.classList.remove('closed'); // Open the right eye when the cursor is away
+        }
+    });
+</script>
+
+</body>
+</html>

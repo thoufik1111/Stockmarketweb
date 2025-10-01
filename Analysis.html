@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Market Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      color: white;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background: #5b5b5b;
+      color: white;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: rgba(126, 126, 126, 0.05);
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+    }
+
+    canvas {
+      max-width: 1100px;
+      height: 500px !important;
+      margin: 40px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Stock Analysis</h2>
+    <div class="form-group">
+      <label for="stock">Stock Name:</label>
+      <input type="text" id="stock" placeholder="e.g., Apple">
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Amount">
+    </div>
+    <div class="form-group">
+      <label for="order-type">Order Type:</label>
+      <select id="order-type">
+        <option value="market">Market</option>
+        <option value="limit">Limit</option>
+      </select>
+    </div>
+    <div class="form-group" id="price-group" style="display: none;">
+      <label for="price">Price (for limit):</label>
+      <input type="number" id="price" placeholder="Enter price">
+    </div>
+    <div class="form-group">
+      <label for="budget">Budget:</label>
+      <input type="number" id="budget" placeholder="Enter budget">
+    </div>
+    <div class="form-group">
+      <label for="validity">Validity (days):</label>
+      <input type="number" id="validity" placeholder="Enter days">
+    </div>
+    <button onclick="submitForm()">Confirm</button>
+  </div>
+
+  <table id="results-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>Stock</th>
+        <th>Amount</th>
+        <th>Order Type</th>
+        <th>Price</th>
+        <th>Budget</th>
+        <th>Validity</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <canvas id="stockChart"></canvas>
+
+  <script>
+    const predefinedCompanies = {
+      "Apple": [120, 135, 150, 170, 180, 200, 220, 230, 250, 270],
+      "Google": [1000, 1100, 1150, 1170, 1200, 1300, 1400, 1450, 1500, 1550],
+      "Amazon": [1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700],
+      "Microsoft": [90, 95, 100, 110, 120, 140, 160, 180, 200, 220],
+      "Tesla": [50, 70, 90, 120, 150, 200, 300, 400, 600, 800],
+      "Meta": [180, 190, 195, 200, 210, 220, 230, 235, 240, 250],
+      "Netflix": [300, 320, 340, 360, 400, 420, 440, 450, 470, 490],
+      "Nvidia": [100, 150, 200, 250, 300, 400, 500, 550, 600, 700],
+      "Intel": [50, 55, 60, 62, 64, 66, 70, 72, 74, 75],
+      "Samsung": [700, 730, 760, 800, 850, 900, 950, 1000, 1050, 1100]
+    };
+
+    const labels = Array.from({ length: 10 }, (_, i) => `${2015 + i}`);
+    let chart;
+
+    document.getElementById('order-type').addEventListener('change', function () {
+      const isLimit = this.value === 'limit';
+      document.getElementById('price').required = isLimit;
+      document.getElementById('price-group').style.display = isLimit ? 'block' : 'none';
+    });
+
+    function updateChart(stockName) {
+      const data = predefinedCompanies[stockName];
+      if (!data) {
+        document.getElementById('stockChart').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('stockChart').style.display = 'block';
+      const ctx = document.getElementById('stockChart').getContext('2d');
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: `${stockName} Stock Price (2015–2024)`,
+            data: data,
+            borderColor: '#00c3ff',
+            backgroundColor: 'rgba(0, 195, 255, 0.2)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: 'white' }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: 'white' }
+            },
+            y: {
+              ticks: { color: 'white' },
+              beginAtZero: false
+            }
+          }
+        }
+      });
+    }
+
+    function submitForm() {
+      const data = {
+        stock: document.getElementById('stock').value.trim(),
+        amount: document.getElementById('amount').value,
+        orderType: document.getElementById('order-type').value,
+        price: document.getElementById('price').value || '-',
+        budget: document.getElementById('budget').value,
+        validity: document.getElementById('validity').value
+      };
+
+      const table = document.getElementById('results-table');
+      const tbody = table.querySelector('tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${data.stock}</td>
+        <td>${data.amount}</td>
+        <td>${data.orderType}</td>
+        <td>${data.price}</td>
+        <td>${data.budget}</td>
+        <td>${data.validity}</td>
+      `;
+      tbody.appendChild(row);
+      table.style.display = 'table';
+
+      updateChart(data.stock);
+
+      fetch('http://localhost:3000/stock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .then(res => console.log("Saved:", res))
+        .catch(err => console.error("Error saving:", err));
+    }
+  </script>
+
+</body>
+</html>

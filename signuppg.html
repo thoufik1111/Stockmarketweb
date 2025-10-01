@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Page</title>
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #3bdeff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-image: url('images/sign.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    
+    .header {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    
+    .sign-in-link {
+        color: #ffffff;
+        background-color: #333;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .sign-in-link:hover {
+        background-color: #555;
+    }
+    
+    .signup-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        background-image: url('images/int.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        position: relative;
+        transition: transform 0.5s, box-shadow 0.5s;
+    }
+    
+    .signup-container h2 {
+        margin-bottom: 20px;
+        color: #141313;
+        text-align: center;
+    }
+    
+    .signup-container input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-image: url('images/log.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        color: #faf8f8;
+    }
+    
+    .signup-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #090909;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .signup-container button:hover {
+        background-color: #d51717;
+    }
+    
+    .language-selector {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .signup-container::before,
+    .signup-container::after {
+        content: '';
+        position: absolute;
+        background: url('images/ai.jpg') no-repeat center center / contain;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .signup-container::before {
+        top: -120px;
+        left: -50px;
+    }
+    
+    .signup-container::after {
+        bottom: -120px;
+        right: -50px;
+    }
+    
+    /* Eyes animation 
+    .eye {
+        position: absolute;
+        width: 60px;
+        height: 10px;
+        background-color: white;
+        border: 2px solid #000;
+        border-radius: 50px / 30px;
+        top: -35px;
+        overflow: hidden;
+        animation: blink 3s infinite;
+    }
+    
+    .eye::before {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #000;
+        border-radius: 50%;
+        top: 7px;
+        left: 22px;
+    }
+    
+    .eye.left {
+        left: 110px; 
+    }
+    
+    .eye.right {
+        left: 180px; 
+    }
+    
+    @keyframes blink {
+        0%, 95% {
+            height: 30px;
+        }
+        97%, 100% {
+            height: 0;
+        }
+    }
+    
+    .eye.closed {
+        height: 0 !important;
+    } */
+  
+
+    </style>
+</head>
+<body>
+
+<div class="signup-container" id="signupContainer">
+    <div class="eye left" id="leftEye"></div>
+    <div class="eye right" id="rightEye"></div>
+    <h2>Sign Up</h2>
+    <input type="text" id="firstname" placeholder="First Name">
+    <input type="text" id="lastname" placeholder="Last Name">
+    <input type="text" id="mobile" placeholder="Mobile Number">
+    <input type="email" id="email" placeholder="Email ID">
+    <input type="password" id="create-password" placeholder="Create Password">
+    <input type="password" id="confirm-password" placeholder="Confirm Password">
+    <button onclick="signup()">Sign Up</button>
+
+    <div class="language-selector">
+        <select id="language" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="hin">Hindi</option>
+            <option value="tam">Tamil</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    function signup() {
+        window.location.href = 'homepg.html';
+    }
+
+    function changeLanguage() {
+        const lang = document.getElementById('language').value;
+        if (lang === 'en') {
+            document.querySelector('h2').innerText = 'Sign Up';
+            document.getElementById('firstname').placeholder = 'First Name';
+            document.getElementById('lastname').placeholder = 'Last Name';
+            document.getElementById('mobile').placeholder = 'Mobile Number';
+            document.getElementById('email').placeholder = 'Email ID';
+            document.getElementById('create-password').placeholder = 'Create Password';
+            document.getElementById('confirm-password').placeholder = 'Confirm Password';
+            document.querySelector('button').innerText = 'Sign Up';
+        } else if (lang === 'hin') {
+            document.querySelector('h2').innerText = 'साइन अप करें';
+            document.getElementById('firstname').placeholder = 'प्रथम नाम';
+            document.getElementById('lastname').placeholder = 'कुलनाम';
+            document.getElementById('mobile').placeholder = 'मोबाइल नंबर';
+            document.getElementById('email').placeholder = 'ईमेल आईडी';
+            document.getElementById('create-password').placeholder = 'पासवर्ड बनाएं';
+            document.getElementById('confirm-password').placeholder = 'पासवर्ड की पुष्टि करें';
+            document.querySelector('button').innerText = 'साइन अप करें';
+        } else if (lang === 'tam') {
+            document.querySelector('h2').innerText = 'பதிவு செய்யவும்';
+            document.getElementById('firstname').placeholder = 'முதல் பெயர்';
+            document.getElementById('lastname').placeholder = 'கடைசி பெயர்';
+            document.getElementById('mobile').placeholder = 'மொபைல் எண்';
+            document.getElementById('email').placeholder = 'மின்னஞ்சல்';
+            document.getElementById('create-password').placeholder = 'கடவுச்சொல்லை உருவாக்கவும்';
+            document.getElementById('confirm-password').placeholder = 'கடவுச்சொல்லை உறுதிப்படுத்தவும்';
+            document.querySelector('button').innerText = 'பதிவு';
+        }
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const signupContainer = document.getElementById('signupContainer');
+        const leftEye = document.getElementById('leftEye');
+        const rightEye = document.getElementById('rightEye');
+        const rect = signupContainer.getBoundingClientRect();
+        const distX = e.clientX - (rect.left + rect.width / 2);
+        const distY = e.clientY - (rect.top + rect.height / 2);
+        const distance = Math.sqrt(distX * distX + distY * distY);
+
+        if (distance < 200) { // Trigger floating effect when cursor is within 200px of the container
+            signupContainer.style.transform = 'translateY(-20px)';
+            signupContainer.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.6)'; // Add glowing effect
+            leftEye.classList.add('closed'); // Close the left eye when the cursor is near
+            rightEye.classList.add('closed'); // Close the right eye when the cursor is near
+        } else {
+            signupContainer.style.transform = 'translateY(0)';
+            signupContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+            leftEye.classList.remove('closed'); // Open the left eye when the cursor is away
+            rightEye.classList.remove('closed'); // Open the right eye when the cursor is away
+        }
+    });
+</script>
+
+</body>
+</html>

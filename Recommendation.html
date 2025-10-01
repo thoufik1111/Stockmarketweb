@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Stock Recommendation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00c3ff;
+    }
+
+    .stock-card {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0, 195, 255, 0.3);
+    }
+
+    .stock-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stock-name {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .stock-price {
+      font-size: 20px;
+      color: #4caf50;
+    }
+
+    canvas {
+      width: 100%;
+      height: 300px !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>AI Stock Recommendations</h1>
+
+  <div id="recommendations"></div>
+</div>
+
+<script>
+  const companies = [
+    { name: "Apple", basePrice: 1170 },
+    { name: "Tesla", basePrice: 780 },
+    { name: "Amazon", basePrice: 2600 },
+    { name: "Google", basePrice: 1500 },
+    { name: "Microsoft", basePrice: 170 }
+  ];
+
+  const generateDummyData = (base) => {
+    return Array.from({ length: 10 }, () => (base + (Math.random() * 10 - 5)).toFixed(2));
+  };
+
+  const createChart = (ctx, label, data) => {
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array.from({ length: 10 }, (_, i) => `T-${10 - i}`),
+        datasets: [{
+          label: `${label} Performance`,
+          data: data,
+          borderColor: '#00c3ff',
+          backgroundColor: 'rgba(0,195,255,0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: { ticks: { color: 'white' } }
+        }
+      }
+    });
+  };
+
+  const recommendationsDiv = document.getElementById("recommendations");
+  const charts = [];
+
+  companies.forEach((company, index) => {
+    const card = document.createElement("div");
+    card.className = "stock-card";
+
+    const header = document.createElement("div");
+    header.className = "stock-header";
+
+    const name = document.createElement("div");
+    name.className = "stock-name";
+    name.textContent = company.name;
+
+    const price = document.createElement("div");
+    price.className = "stock-price";
+    price.id = `price-${index}`;
+    price.textContent = `$${company.basePrice.toFixed(2)}`;
+
+    header.appendChild(name);
+    header.appendChild(price);
+
+    const canvas = document.createElement("canvas");
+    canvas.id = `chart-${index}`;
+
+    card.appendChild(header);
+    card.appendChild(canvas);
+    recommendationsDiv.appendChild(card);
+
+    const ctx = canvas.getContext('2d');
+    const chart = createChart(ctx, company.name, generateDummyData(company.basePrice));
+    charts.push({ chart, index, base: company.basePrice });
+  });
+
+  // Simulate chart updates every 30 seconds
+  setInterval(() => {
+    charts.forEach(({ chart, index, base }) => {
+      chart.data.datasets[0].data = generateDummyData(base);
+      chart.update();
+    });
+  }, 15000); // every 30s
+
+  // Simulate stock price increase every 20s
+  setInterval(() => {
+    charts.forEach(({ index }) => {
+      const el = document.getElementById(`price-${index}`);
+      let price = parseFloat(el.textContent.replace('$', ''));
+      price += (Math.random() * 5).toFixed(2);
+      el.textContent = `$${price.toFixed(2)}`;
+      el.style.color = '#4caf50'; // green
+    });
+  }, 10000); // every 20s
+
+  // Simulate stock price decrease every 40s
+  setInterval(() => {
+    charts.forEach(({ index }) => {
+      const el = document.getElementById(`price-${index}`);
+      let price = parseFloat(el.textContent.replace('$', ''));
+      price -= (Math.random() * 5).toFixed(2);
+      el.textContent = `$${price.toFixed(2)}`;
+      el.style.color = '#f44336'; // red
+    });
+  }, 20000); // every 40s
+</script>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Trading Game</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px #334155;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: #38bdf8;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .input, select {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+    .stock-box {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .green { color: #4ade80; }
+    .red { color: #f87171; }
+    canvas { background: #fff; border-radius: 10px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>💰 Select Currency</h2>
+      <select id="currency">
+        <option value="INR">INR</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="CNY">CNY</option>
+        <option value="JPY">JPY</option>
+        <option value="SAR">SAR</option>
+      </select>
+      <p id="balance" class="green">Balance: ₹100000</p>
+    </div>
+
+    <div class="card">
+      <h2>🔥 Trending Stocks</h2>
+      <div id="stocks"></div>
+    </div>
+
+    <div class="card" id="buy-section" style="display: none;">
+      <h2>📊 Buy <span id="selected-symbol"></span></h2>
+      <p id="selected-price"></p>
+      <input type="number" id="stock-count" placeholder="Number of stocks" class="input">
+      <select id="validity">
+        <option value="1">1 Month</option>
+        <option value="2">2 Months</option>
+        <option value="3">3 Months</option>
+        <option value="4">4 Months</option>
+      </select>
+      <button class="btn" onclick="buyStock()">Buy Now</button>
+      <canvas id="stockChart" width="600" height="300"></canvas>
+    </div>
+
+    <div class="card" id="history-section" style="display: none;">
+      <h2>📈 Your Stock History</h2>
+      <div id="history"></div>
+    </div>
+
+    <div class="card" id="leaderboard-section" style="display: none;">
+      <h2>🏆 Guild Leaderboard</h2>
+      <div id="leaderboard"></div>
+    </div>
+  </div>
+
+  <script>
+    const currencyRates = {
+      INR: 1,
+      USD: 0.012,
+      EUR: 0.011,
+      CNY: 0.087,
+      JPY: 1.8,
+      SAR: 0.045,
+    };
+
+    const stocks = [
+      { symbol: 'TCS', name: 'Tata Consultancy', price: 3350 },
+      { symbol: 'INFY', name: 'Infosys', price: 1490 },
+      { symbol: 'RELI', name: 'Reliance', price: 2380 },
+      { symbol: 'WIPRO', name: 'Wipro', price: 540 },
+      { symbol: 'HDFC', name: 'HDFC Bank', price: 1670 },
+      { symbol: 'ICICI', name: 'ICICI Bank', price: 900 },
+      { symbol: 'SBIN', name: 'State Bank of India', price: 590 },
+    ];
+
+    let baseAmount = 100000;
+    let selectedStock = null;
+    let history = [];
+    let leaderboard = [];
+    let chart;
+
+    const balanceEl = document.getElementById('balance');
+    const currencyEl = document.getElementById('currency');
+    const stocksEl = document.getElementById('stocks');
+    const buySection = document.getElementById('buy-section');
+    const selectedSymbol = document.getElementById('selected-symbol');
+    const selectedPrice = document.getElementById('selected-price');
+    const historyEl = document.getElementById('history');
+    const leaderboardEl = document.getElementById('leaderboard');
+
+    function updateBalance() {
+      const currency = currencyEl.value;
+      const converted = (baseAmount * currencyRates[currency]).toFixed(2);
+      balanceEl.innerText = `Balance: ${currency} ${converted}`;
+    }
+
+    function loadStocks() {
+      stocksEl.innerHTML = '';
+      stocks.forEach(stock => {
+        const div = document.createElement('div');
+        div.className = 'stock-box';
+        div.innerHTML = `<strong>${stock.symbol}</strong> - ${stock.name}<br>Price: ₹${stock.price}`;
+        div.onclick = () => selectStock(stock);
+        stocksEl.appendChild(div);
+      });
+    }
+
+    function selectStock(stock) {
+      selectedStock = stock;
+      selectedSymbol.innerText = stock.symbol;
+      selectedPrice.innerText = `Current Price: ₹${stock.price}`;
+      buySection.style.display = 'block';
+      renderChart(stock);
+    }
+
+    function renderChart(stock) {
+      const ctx = document.getElementById('stockChart').getContext('2d');
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [{
+            label: `${stock.symbol} Price Trend`,
+            data: Array.from({ length: 7 }, () => (stock.price * (0.9 + Math.random() * 0.2)).toFixed(2)),
+            borderColor: '#38bdf8',
+            backgroundColor: 'rgba(56, 189, 248, 0.2)',
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: false } }
+        }
+      });
+    }
+
+    function getRandomProfit() {
+      const r = Math.random();
+      return r > 0.5 ? +(r * 10000).toFixed(2) : -+(r * 5000).toFixed(2);
+    }
+
+    function buyStock() {
+      const count = parseInt(document.getElementById('stock-count').value);
+      const validity = parseInt(document.getElementById('validity').value);
+      if (!selectedStock || count <= 0) return;
+
+      const totalCost = count * selectedStock.price;
+      if (totalCost > baseAmount) return;
+
+      baseAmount -= totalCost;
+      updateBalance();
+
+      const profit = getRandomProfit();
+      history.push({ symbol: selectedStock.symbol, count, price: selectedStock.price, validity, profit });
+      leaderboard.push({ name: `GuildUser${leaderboard.length + 1}`, points: (profit + 5000).toFixed(2) });
+
+      displayHistory();
+      displayLeaderboard();
+    }
+
+    function displayHistory() {
+      historyEl.innerHTML = '';
+      history.forEach(h => {
+        const div = document.createElement('div');
+        div.innerHTML = `🧾 ${h.count}x ${h.symbol} @ ₹${h.price}<br>📅 ${h.validity} Months<br>💰 <span class="${h.profit >= 0 ? 'green' : 'red'}">Profit: ₹${h.profit}</span><hr>`;
+        historyEl.appendChild(div);
+      });
+      document.getElementById('history-section').style.display = 'block';
+    }
+
+    function displayLeaderboard() {
+      leaderboardEl.innerHTML = '';
+      leaderboard.forEach(user => {
+        const div = document.createElement('div');
+        div.className = 'flex';
+        div.innerHTML = `<span>${user.name}</span><span>${user.points} pts</span>`;
+        leaderboardEl.appendChild(div);
+      });
+      document.getElementById('leaderboard-section').style.display = 'block';
+    }
+
+    currencyEl.addEventListener('change', updateBalance);
+
+    updateBalance();
+    loadStocks();
+  </script>
+</body>
+</html>

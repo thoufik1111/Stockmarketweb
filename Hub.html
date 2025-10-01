@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investor's Hub - Guild</title>
+  <link rel="stylesheet" href="style/main.css" />
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f1f5f9;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #38bdf8;
+      text-align: center;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .section {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #38bdf8;
+    }
+    .textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 10px;
+      color: #f1f5f9;
+      border-radius: 10px;
+      resize: none;
+      height: 80px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .post {
+      background: #0f172a;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .post-header {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 5px;
+    }
+    .post-content {
+      font-size: 15px;
+      color: #f8fafc;
+    }
+    .media {
+      margin-top: 10px;
+      border-radius: 10px;
+      max-width: 100%;
+    }
+    .member-online {
+      margin-bottom: 10px;
+      color: #34d399;
+    }
+  </style>
+</head>
+<body>
+  <h1>Investor's Hub Guild 🧠💬</h1>
+
+  <div class="container">
+    <!-- Left Sidebar -->
+    <div class="section">
+      <h3>Guild Members 🧑‍🤝‍🧑</h3>
+      <div id="members">
+        <div class="member-online">🟢 Ragul</div>
+        <div class="member-online">🟢 Safreen Fathima</div>
+        <div class="member-online">🟢 Karthi Raj</div>
+        <div>🔴 Bharath R</div>
+        <div>🔴 Nivetha Rani</div>
+      </div>
+    </div>
+
+    <!-- Center Community Section -->
+    <div class="section">
+      <h3>Community 🗣️</h3>
+      <textarea class="textarea" placeholder="Share something with the community..."></textarea>
+      <button onclick="postCommunity()">Post</button>
+      <div id="communityFeed"></div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="section">
+      <h3>Guild Feed 📢</h3>
+      <div id="guildFeed"></div>
+    </div>
+  </div>
+
+  <script>
+    const communityFeed = document.getElementById('communityFeed');
+    const guildFeed = document.getElementById('guildFeed');
+
+    const communityUsers = ["Aarav Patel", "Sneha Rao", "Vikram", "Diya Shah", "Harish","Bala","Vijay","Pradeep","Walter","Thomino"]; 
+    const communityMessages = [
+      "What are your top picks for next month?",
+      "Market correction coming? Be careful!",
+      "Check out Adani Ports, bullish sign.",
+      "Invest in knowledge first, then money!",
+      "My intraday strategy just hit 10% gains!",
+      "I had a rough day in stocks",
+      "I am looking for a good stock to invest in",
+      "Tesla stocsk were rising guys",
+      "How many invested in Intel"
+    ];
+
+    const guildMessages = [
+      "Hello everyone, any active traders here?",
+      "What's hot today?",
+      "How are the midcaps performing?",
+      "Anyone watching Reliance?",
+      "Let’s discuss long-term holds.",
+      "I am looking for a good stock to invest in",
+      "Lets see tomorrow",
+      "I lost everything guys :(",
+      "Millionaire is here"
+    ];
+
+    function postCommunity() {
+      const textarea = document.querySelector('.textarea');
+      const text = textarea.value.trim();
+      if (!text) return;
+      const newPost = createPost('You', text);
+      communityFeed.prepend(newPost);
+      textarea.value = '';
+    }
+
+    function createPost(user, content, mediaURL = null) {
+      const postDiv = document.createElement('div');
+      postDiv.className = 'post';
+      postDiv.innerHTML = `
+        <div class="post-header">${user} - just now</div>
+        <div class="post-content">${content}</div>
+        ${mediaURL ? `<img class="media" src="${mediaURL}" alt="media" />` : ''}
+      `;
+      return postDiv;
+    }
+
+    function addCommunityPost() {
+      const user = communityUsers[Math.floor(Math.random() * communityUsers.length)];
+      const message = communityMessages[Math.floor(Math.random() * communityMessages.length)];
+      const media = Math.random() > 0.7 ? `https://source.unsplash.com/random/400x200?sig=${Math.random() * 100}` : null;
+      const post = createPost(user, message, media);
+      communityFeed.prepend(post);
+    }
+
+    function addGuildMessage() {
+      const user = ["Ragul", "Safreen", "Karthi", "Bharath", "Nivetha"][Math.floor(Math.random() * 5)];
+      const msg = guildMessages[Math.floor(Math.random() * guildMessages.length)];
+      const post = createPost(user, msg);
+      guildFeed.prepend(post);
+    }
+
+    setInterval(addCommunityPost, 10000); // every 10 seconds
+    setInterval(addGuildMessage, 30000); // every 30 seconds
+  </script>
+
+</body>
+</html>

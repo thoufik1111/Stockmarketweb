@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Leaderboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #1e293b, #0f172a);
+      color: #f8fafc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+    th {
+      background-color: #1e293b;
+      color: #f1f5f9;
+    }
+    tr.up {
+      background-color: #14532d;
+      transition: all 0.5s ease;
+    }
+    tr.down {
+      background-color: #7f1d1d;
+      transition: all 0.5s ease;
+    }
+    .container {
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-7xl mx-auto p-6 rounded-2xl shadow-2xl mt-10 container">
+    <h1 class="text-3xl font-bold mb-6 text-center text-sky-400">📈 Live Stock Leaderboard</h1>
+    <div class="overflow-x-auto rounded-xl">
+      <table id="stock-table" class="text-sm">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Date</th>
+            <th>Close</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Open</th>
+            <th>Volume</th>
+            <th>Adj Close</th>
+            <th>Adj High</th>
+            <th>Adj Low</th>
+            <th>Adj Open</th>
+            <th>Adj Volume</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <!-- Rows will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const generateStock = (symbol) => {
+      const rand = () => (Math.random() * 1000 + 100).toFixed(2);
+      const randVol = () => Math.floor(Math.random() * 100000);
+      const now = new Date().toISOString().split('T')[0];
+      return {
+        symbol,
+        date: now,
+        close: +rand(),
+        high: +rand(),
+        low: +rand(),
+        open: +rand(),
+        volume: randVol(),
+        adjClose: +rand(),
+        adjHigh: +rand(),
+        adjLow: +rand(),
+        adjOpen: +rand(),
+        adjVolume: randVol()
+      };
+    };
+
+    const symbols = [
+      "AAPL", "GOOGL", "MSFT", "AMZN", "TSLA",
+      "NFLX", "META", "NVDA", "INTC", "ORCL",
+      "IBM", "ADBE", "PYPL", "CSCO", "BABA",
+      "TCS", "INFY", "RELIANCE", "HDFCBANK", "ICICIBANK"
+    ];
+
+    let stocks = symbols.map(generateStock);
+
+    function updateTable() {
+      // Randomize values slightly
+      stocks = stocks.map(stock => {
+        const randomFactor = () => (Math.random() * 10 - 5).toFixed(2);
+        return {
+          ...stock,
+          close: +(stock.close + +randomFactor()).toFixed(2),
+          high: +(stock.high + +randomFactor()).toFixed(2),
+          low: +(stock.low + +randomFactor()).toFixed(2),
+          open: +(stock.open + +randomFactor()).toFixed(2),
+          volume: stock.volume + Math.floor(Math.random() * 1000 - 500),
+          adjClose: +(stock.adjClose + +randomFactor()).toFixed(2),
+          adjHigh: +(stock.adjHigh + +randomFactor()).toFixed(2),
+          adjLow: +(stock.adjLow + +randomFactor()).toFixed(2),
+          adjOpen: +(stock.adjOpen + +randomFactor()).toFixed(2),
+          adjVolume: stock.adjVolume + Math.floor(Math.random() * 1000 - 500)
+        };
+      });
+
+      // Sort based on adjClose descending
+      stocks.sort((a, b) => b.adjClose - a.adjClose);
+
+      const tbody = document.getElementById("leaderboard-body");
+      tbody.innerHTML = "";
+
+      stocks.forEach((stock, index) => {
+        const row = document.createElement("tr");
+        row.className = index % 2 === 0 ? "up" : "down";
+        row.innerHTML = `
+          <td>${stock.symbol}</td>
+          <td>${stock.date}</td>
+          <td>${stock.close}</td>
+          <td>${stock.high}</td>
+          <td>${stock.low}</td>
+          <td>${stock.open}</td>
+          <td>${stock.volume}</td>
+          <td>${stock.adjClose}</td>
+          <td>${stock.adjHigh}</td>
+          <td>${stock.adjLow}</td>
+          <td>${stock.adjOpen}</td>
+          <td>${stock.adjVolume}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    updateTable();
+    setInterval(updateTable, 9000); // every 9 sec
+  </script>
+</body>
+</html>
